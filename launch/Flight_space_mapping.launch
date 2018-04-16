@@ -1,0 +1,21 @@
+<launch>
+
+  <include file="$(find rotors_gazebo)/launch/mav_hovering_example_velodyne.launch" />
+
+  <node pkg="wind_visualization" name="wind_visual" type="wind_visual_node" />
+
+  <include file="$(find octomap_server)/launch/octomap_mapping.launch">
+    <arg name="resolution" value="0.1" />
+    <arg name="frame_id" value="world" />
+    <arg name="sensor_model/max_range" value="-1" />
+    <arg name="pointcloud_min_z" value="0.1" />
+    <remap from="cloud_in" to="/firefly/velodyne_points" />
+  </include>
+
+  <include file="$(find flight_space_mapping)/launch/abstract_map.launch" />
+
+  <node pkg="hector_trajectory_server" name="trajectory" type="hector_trajectory_server" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" />
+
+</launch>
