@@ -84,7 +84,7 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
   seg.setMaxIterations (100);
-  seg.setDistanceThreshold (0.06);
+  seg.setDistanceThreshold (0.1);
 
   seg.setInputCloud (pXYZ);
   seg.segment (*inliers, *coefficients);

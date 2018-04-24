@@ -53,19 +53,22 @@
 		<!-- maximum range to integrate (speedup!) -->
 		<param name="sensor_model/max_range" value="-1" />
 
-                <param name="pointcloud_min_z" value="0.1" />
+                <param name="pointcloud_min_z" value="0" />
 		
 		<!-- data source to integrate (PointCloud2) -->
 		<remap from="cloud_in" to="/firefly/velodyne_points" />
 	
 	</node>
 
-	<!-- remap from="cloud_in" to="/firefly/velodyne_points" / -->
+	<remap from="cloud_in" to="/firefly/velodyne_points" />
 
-	<!-- include file="$(find flight_space_mapping)/launch/abstract_map.launch" / -->
+	<include file="$(find flight_space_mapping)/launch/abstract_map.launch" />
 
-	<!-- node pkg="hector_trajectory_server" name="trajectory" type="hector_trajectory_server" / -->
+	<node pkg="hector_trajectory_server" name="trajectory" type="hector_trajectory_server">
+		<param name="target_frame_name" value="world" />
+		<param name="source_frame_name" value="firefly/base_link" />
+	</node>
 
-	<!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" / -->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" />
 
 </launch>
