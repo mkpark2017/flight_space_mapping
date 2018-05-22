@@ -26,6 +26,6 @@
     <param name="source_frame_name" value="firefly_1/base_link" />
   </node>
 
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" />
+  <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" / -->
 </launch>
 
