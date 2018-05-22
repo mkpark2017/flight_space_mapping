@@ -111,6 +111,7 @@ link_directories(${catkin_LIBRARY_DIRS})
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(abstract_map src/abstract_map.cpp)
 add_executable(euclidean_cluster src/euclidean_cluster.cpp)
+add_executable(ugv_objects_map src/ugv_objects_map.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -122,7 +123,7 @@ add_executable(euclidean_cluster src/euclidean_cluster.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(abstract_map ${catkin_LIBRARIES})
 target_link_libraries(euclidean_cluster ${catkin_LIBRARIES})
-
+target_link_libraries(ugv_objects_map ${catkin_LIBRARIES})
 
 #############
 ## Install ##

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server1">
+    <param name="resolution" value="0.1" />
+
+    <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+    <param name="frame_id" type="string" value="world" />
+	
+    <!-- maximum range to integrate (speedup!) -->
+    <param name="sensor_model/max_range" value="-1" />
+
+    <param name="pointcloud_min_z" value="0" />
+
+    <!-- data source to integrate (PointCloud2) -->
+    <remap from="cloud_in" to="/firefly_1/velodyne_points" />
+    <remap from="/occupied_cells_vis_array" to="/firefly_1/occupied_cells_vis_array" />	
+  </node>
+
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server2">
+    <param name="resolution" value="0.1" />
+
+    <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+    <param name="frame_id" type="string" value="world" />
+	
+    <!-- maximum range to integrate (speedup!) -->
+    <param name="sensor_model/max_range" value="-1" />
+
+    <param name="pointcloud_min_z" value="0" />
+
+    <!-- data source to integrate (PointCloud2) -->
+    <remap from="cloud_in" to="/firefly_2/velodyne_points" />
+    <remap from="/occupied_cells_vis_array" to="/firefly_2/occupied_cells_vis_array" />
+  </node>
+
+</launch>

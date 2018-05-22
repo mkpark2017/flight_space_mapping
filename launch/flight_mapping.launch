@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="wind_visualization" name="wind_visual" type="wind_visual_node" />
+
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+    <param name="resolution" value="0.1" />
+
+    <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+    <param name="frame_id" type="string" value="map" />
+	
+    <!-- maximum range to integrate (speedup!) -->
+    <param name="sensor_model/max_range" value="-1" />
+
+    <param name="pointcloud_min_z" value="0" />
+
+    <!-- data source to integrate (PointCloud2) -->
+    <remap from="cloud_in" to="/firefly_1/velodyne_points" />
+	
+  </node>
+
+
+  <include file="$(find flight_space_mapping)/launch/abstract_map.launch" />
+
+  <node pkg="hector_trajectory_server" name="trajectory" type="hector_trajectory_server">
+    <param name="target_frame_name" value="world" />
+    <param name="source_frame_name" value="firefly_1/base_link" />
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" />
+</launch>
+
