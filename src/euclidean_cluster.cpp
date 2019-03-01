@@ -102,7 +102,11 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
   seg.setMaxIterations (100);
+<<<<<<< HEAD
   seg.setDistanceThreshold (ransac_distance_threashold);
+=======
+  seg.setDistanceThreshold (0.3);
+>>>>>>> 960db8d797dc8729403e825590207663137980fd
 
   seg.setInputCloud (pXYZ);
   seg.segment (*inliers, *coefficients);
@@ -128,9 +132,15 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<RefPointType> ec;
   // Specify euclidean cluster parameters
+<<<<<<< HEAD
   ec.setClusterTolerance (kd_tolerance); // 60cm
   ec.setMinClusterSize (kd_min_size);
   ec.setMaxClusterSize (kd_max_size);
+=======
+  ec.setClusterTolerance (0.6); // 60cm
+  ec.setMinClusterSize (150);
+  ec.setMaxClusterSize (25000);
+>>>>>>> 960db8d797dc8729403e825590207663137980fd
   ec.setSearchMethod (tree);
   ec.setInputCloud (pXYZ);
   ec.extract (cluster_indices);

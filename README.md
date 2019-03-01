@@ -39,7 +39,7 @@ Basic Usage
 Launch the simulator with a hex-rotor helicopter model with velodyne lidar and maaping nodes with Rviz displayer.
 
 ```
-$ roslaunch flight_space_mapping Flight_space_mapping.launch
+$ roslaunch flight_space_mapping single_UAV_UGV_mapping.launch
 ```
 
 I implement segmap_ros example using gazebo simulatior. Yoe can install "segmap_ros" through
