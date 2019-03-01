@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find flight_space_mapping)/rviz/Flight_space_mapping.rviz" />
+</launch>

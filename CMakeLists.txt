@@ -14,6 +14,7 @@ find_package(catkin REQUIRED
   sensor_msgs
   pcl_conversions
   pcl_ros
+  nav_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -109,8 +110,12 @@ link_directories(${catkin_LIBRARY_DIRS})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
+add_executable(base_odom_tf src/base_odom_tf.cpp)
 add_executable(abstract_map src/abstract_map.cpp)
 add_executable(euclidean_cluster src/euclidean_cluster.cpp)
+add_executable(ugv_objects_map src/ugv_objects_map.cpp)
+add_executable(ransac_ground_filter src/ransac_ground_filter.cpp)
+add_executable(pass_through_ground_filter src/pass_through_ground_filter.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -120,8 +125,12 @@ add_executable(euclidean_cluster src/euclidean_cluster.cpp)
 
 
 ## Specify libraries to link a library or executable target against
+target_link_libraries(base_odom_tf ${catkin_LIBRARIES})
 target_link_libraries(abstract_map ${catkin_LIBRARIES})
 target_link_libraries(euclidean_cluster ${catkin_LIBRARIES})
+target_link_libraries(ugv_objects_map ${catkin_LIBRARIES})
+target_link_libraries(ransac_ground_filter ${catkin_LIBRARIES})
+target_link_libraries(pass_through_ground_filter ${catkin_LIBRARIES})
 
 
 #############

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find flight_space_mapping)/launch/World.launch" />
+  <include file="$(find flight_space_mapping)/launch/double_UAV_UGV_spawn.launch" />
+  <include file="$(find flight_space_mapping)/launch/only_mapping_double.launch" />
+  <include file="$(find flight_space_mapping)/launch/flight_mapping.launch" />
+
+</launch>

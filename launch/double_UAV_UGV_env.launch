@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<launch>
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+<!--    <arg name="world_name" default="$(find flight_space_mapping)/world/city_5.world"/> -->
+    <arg name="world_name" default="$(find flight_space_mapping)/world/Goheung_center_upgrade.world"/>
+    <!-- <arg name="debug" value="true"/> -->
+    <arg name="paused" value="true"/>
+    <!-- <arg name="gui" value="false"/> -->
+  </include>
+
+  <arg name="mav_name" default="firefly"/>
+  <arg name="enable_logging" default="false" />
+  <arg name="enable_ground_truth" default="false" />
+  <arg name="log_file" default="$(arg mav_name)" />
+
+  <arg name="laser_enabled" default="false"/>
+  <arg name="3d_sensor_enabled" default="true"/>
+  <arg name="3d_sensor_tilted" default="true"/>
+  <arg name="kinect_enabled" default="false"/>
+
+  <arg name="ns0" value="robot0" />
+
+  <group ns="$(arg ns0)">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg ns0)" />
+      <arg name="model" value="$(find rotors_description)/urdf/mav_with_velodyne.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg ns0)"/>
+      <arg name="y" value="-2.0"/>
+      <arg name="x" value="0.0"/>
+    </include>
+
+    <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="-5 5 40 0 2"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <!-- Ground segmentation -->
+<!--
+    <node name="ransac_ground_filter" pkg="flight_space_mapping" type="ransac_ground_filter">
+      <rosparam param="distance_threashold" subst_value="True">0.3</rosparam>
+    </node>
+-->
+    <node name="ground_filter" pkg="flight_space_mapping" type="pass_through_ground_filter">
+      <param name="filter_min" type="double" value="0.0"/>
+      <param name="filter_max" type="double" value="30.0"/>
+<!--      <remap from="pcl_obj" to="pcl_obj_2" /> -->
+    </node>
+    <!-- Odom to base_link based on ground truth -->
+    <node name="base_odom_tf" pkg="flight_space_mapping" type="base_odom_tf">
+      <rosparam param="parent_frame_id" subst_value="True">$(arg ns0)/odom</rosparam>
+      <rosparam param="child_frame_id" subst_value="True">$(arg ns0)/base_link</rosparam>
+<!--      <rosparam param="offset" subst_value="True">[-20, -20, 0, 0, 0, 0, 0]</rosparam> -->
+      <rosparam param="offset" subst_value="True">[0, 0, 0, 0, 0, 0, 0]</rosparam>
+    </node>
+  </group>
+
+  <arg name="ns1" value="robot1" />
+  <group ns="$(arg ns1)">
+    <include file="$(find rotors_gazebo)/launch/spawn_mav.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg ns1)" />
+      <arg name="model" value="$(find rotors_description)/urdf/mav_with_velodyne.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="log_file" value="$(arg ns1)"/>
+      <arg name="y" value="2.0"/>
+      <arg name="x" value="25.0"/>
+    </include>
+    <node name="lee_position_controller_node" pkg="rotors_control" type="lee_position_controller_node" output="screen">
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/lee_controller_$(arg mav_name).yaml" />
+      <rosparam command="load" file="$(find rotors_gazebo)/resource/$(arg mav_name).yaml" />
+      <remap from="odometry" to="odometry_sensor1/odometry" />
+    </node>
+    <node name="waypoint_publisher" pkg="rotors_gazebo" type="waypoint_publisher" output="screen" args="15 5 40 0 2"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <!-- Ground segmentation -->
+<!--
+    <node name="ransac_ground_filter" pkg="flight_space_mapping" type="ransac_ground_filter">
+      <rosparam param="distance_threashold" subst_value="True">0.3</rosparam>
+    </node>
+-->
+    <node name="ground_filter" pkg="flight_space_mapping" type="pass_through_ground_filter">
+      <param name="filter_min" type="double" value="0.0"/>
+      <param name="filter_max" type="double" value="30.0"/>
+<!--      <remap from="pcl_obj" to="pcl_obj_2" /> -->
+    </node>
+
+    <!-- Odom to base_link based on ground truth -->
+    <node name="base_odom_tf" pkg="flight_space_mapping" type="base_odom_tf">
+      <rosparam param="parent_frame_id" subst_value="True">$(arg ns1)/odom</rosparam>
+      <rosparam param="child_frame_id" subst_value="True">$(arg ns1)/base_link</rosparam>
+<!--      <rosparam param="offset" subst_value="True">[20, 20, 0, 0, 0, 0, 0]</rosparam>  -->
+      <rosparam param="offset" subst_value="True">[0, 0, 0, 0, 0, 0, 0]</rosparam>
+    </node>
+  </group>
+
+  <arg name="ns2" value="robot2" />
+  <group ns="$(arg ns2)">
+
+    <include file="$(find husky_gazebo)/launch/spawn_multi_husky.launch">
+      <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+      <arg name="3d_sensor_enabled" value="$(arg 3d_sensor_enabled)"/>
+      <arg name="3d_sensor_tilted" value="$(arg 3d_sensor_tilted)"/>
+      <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
+      <arg name="robot_namespace" value="$(arg ns2)"/>
+      <arg name="x" value="-10.0"/>
+      <arg name="y" value="1.0"/>
+      <arg name="yaw" value="3.14"/>
+<!--
+      <arg name="init_x" value="$(eval 5.* arg('x'))"/>
+      <arg name="init_y" value="$(eval 5.* arg('y'))"/>
+      <arg name="init_yaw" value="$(eval 5.* arg('yaw'))"/>
+-->
+      <arg name="init_x" value="-10.0"/>
+      <arg name="init_y" value="1.0"/>
+      <arg name="init_yaw" value="3.14"/>
+
+      <arg name="robot_description"
+       default="$(find husky_description)/urdf/multi_husky_velodyne.urdf.xacro"/>
+  </include>
+  <!-- Ground segmentation -->
+  <node name="ransac_ground_filter" pkg="flight_space_mapping" type="ransac_ground_filter" output="screen"/>
+  </group>
+
+  <arg name="ns3" value="robot3" />
+  <group ns="$(arg ns3)">
+
+    <include file="$(find husky_gazebo)/launch/spawn_multi_husky.launch">
+      <arg name="laser_enabled" value="$(arg laser_enabled)"/>
+      <arg name="3d_sensor_enabled" value="$(arg 3d_sensor_enabled)"/>
+      <arg name="3d_sensor_tilted" value="$(arg 3d_sensor_tilted)"/>
+      <arg name="kinect_enabled" value="$(arg kinect_enabled)"/>
+      <arg name="robot_namespace" value="$(arg ns3)"/>
+      <arg name="x" value="20.0"/>
+      <arg name="y" value="-1.0"/>
+      <arg name="yaw" value="0"/>
+<!--
+      <arg name="init_x" value="$(eval 5.* arg('x'))"/>
+      <arg name="init_y" value="$(eval 5.* arg('y'))"/>
+      <arg name="init_yaw" value="$(eval 5.* arg('yaw'))"/>
+-->
+      <arg name="init_x" value="20.0"/>
+      <arg name="init_y" value="-1.0"/>
+      <arg name="init_yaw" value="0"/>
+
+      <arg name="robot_description"
+       default="$(find husky_description)/urdf/multi_husky_velodyne.urdf.xacro"/>
+  </include>
+  <!-- Ground segmentation -->
+  <node name="ransac_ground_filter" pkg="flight_space_mapping" type="ransac_ground_filter" output="screen"/>
+
+  </group>
+
+
+</launch>

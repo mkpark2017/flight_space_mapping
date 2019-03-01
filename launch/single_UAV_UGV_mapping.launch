@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<launch>
+<!--
+  <node pkg="wind_visualization" name="wind_visual" type="wind_visual_node">
+    <remap from="/firefly/ground_truth/pose" to="/robot0/ground_truth/pose" />
+    <remap from="/wind_data" to="/robot0/wind_data" />
+  </node>
+-->
+  <node pkg="octomap_server" type="octomap_server_node" name="octomap_server" output="screen">
+    <param name="resolution" value="0.3" />
+
+    <!-- fixed map frame (set to 'map' if SLAM or localization running!) -->
+    <param name="frame_id" type="string" value="world" />
+    <!-- param name="frame_id" type="string" value="/robot0/base_link" / -->
+    <!-- maximum range to integrate (speedup!) -->
+    <param name="sensor_model/max_range" value="-1" />
+
+  <!--  <param name="pointcloud_min_z" value="0" /> -->
+
+    <!-- data source to integrate (PointCloud2) -->
+    <remap from="cloud_in" to="/robot0/velodyne_points" />
+	
+  </node>
+  <!-- map abstraction -->
+  <node pkg="flight_space_mapping" name="euclidean_cluster" type="euclidean_cluster">
+      <rosparam param="map_frame_id" subst_value="True">world</rosparam>
+      <rosparam param="ransac_distance_threashold" subst_value="True">0.3</rosparam>
+      <rosparam param="kd_min_size" subst_value="True">100</rosparam>
+      <rosparam param="kd_max_size" subst_value="True">30000</rosparam>
+      <rosparam param="kd_tolerance" subst_value="True">0.8</rosparam>
+  </node>
+  
+  <node pkg="flight_space_mapping" name="abstract_map" type="abstract_map" />
+
+  <!-- ugv 2d map -->
+  <node pkg="flight_space_mapping" type="ugv_objects_map" name="ugv_objects_map" />
+
+  <!-- trajectory -->
+  <node pkg="hector_trajectory_server" name="trajectory" type="hector_trajectory_server">
+    <param name="target_frame_name" value="world" />
+    <param name="source_frame_name" value="robot0/base_link" />
+  </node>
+
+
+</launch>

@@ -1,7 +1,7 @@
 <launch>
 
-  <node pkg="euclidean_cluster" name="euclidean_cluster" type="euclidean_cluster" />
+  <node pkg="flight_space_mapping" name="euclidean_cluster" type="euclidean_cluster" />
 
-  <node pkg="abstract_map" name="abstract_map" type="abstract_map_node" />
+  <node pkg="flight_space_mapping" name="abstract_map" type="abstract_map" />
 
 </launch>

@@ -19,6 +19,9 @@
 
 #include <iostream>
 
+
+
+
 typedef pcl::PointXYZRGB RefPointType;
 
 class ecd_cluster
@@ -57,6 +60,21 @@ class ecd_cluster
 
 void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 {
+  double ransac_distance_threashold = 0.02;
+  std::string map_frame_id = "notgiven";
+  double kd_min_size = 150;
+  double kd_max_size = 25000;
+  double kd_tolerance = 0.6;
+
+  ros::param::get("~map_frame_id", map_frame_id);
+  ros::param::get("~ransac_distance_threashold", ransac_distance_threashold);
+  ros::param::get("~kd_min_size", kd_min_size);
+  ros::param::get("~kd_max_size", kd_max_size);
+  ros::param::get("~kd_tolerance", kd_tolerance);
+
+
+
+
   // Convert PointCloud2 to pointXYZ
   pcl::PCLPointCloud2 pcl_PC2;
   pcl_conversions::toPCL(*cloud_msg,pcl_PC2);
@@ -84,7 +102,7 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
   seg.setMaxIterations (100);
-  seg.setDistanceThreshold (0.06);
+  seg.setDistanceThreshold (ransac_distance_threashold);
 
   seg.setInputCloud (pXYZ);
   seg.segment (*inliers, *coefficients);
@@ -110,9 +128,9 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<RefPointType> ec;
   // Specify euclidean cluster parameters
-  ec.setClusterTolerance (0.3); // 30cm
-  ec.setMinClusterSize (50);
-  ec.setMaxClusterSize (25000);
+  ec.setClusterTolerance (kd_tolerance); // 60cm
+  ec.setMinClusterSize (kd_min_size);
+  ec.setMaxClusterSize (kd_max_size);
   ec.setSearchMethod (tree);
   ec.setInputCloud (pXYZ);
   ec.extract (cluster_indices);
@@ -137,7 +155,7 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   sensor_msgs::PointCloud2 obj_min_edges, obj_max_edges;
   sensor_msgs::PointCloud2 obj_edges;
   int j = 1;
-  uint32_t color=0;
+  uint32_t color=0x00000F;
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
   {
      pcl::PointCloud<RefPointType>::Ptr cloud_cluster (new pcl::PointCloud<RefPointType>);
@@ -167,7 +185,7 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
     obj_center_XYZ.points.push_back (ppp);
 
     ++j;
-    color += 0x00000e << ((j+1)*5);
+    color += 0x00000a << (((j)*5)%25);
 
 //std::vector<int>::const_iterator k = it;
 //std::cout << k << std::endl;
@@ -188,10 +206,10 @@ void ecd_cluster::cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
   pcl_conversions::fromPCL(outputMAX, obj_max_edges);
   pcl_conversions::fromPCL(outputEDGE, obj_edges);
 
-  obj_centers.header.frame_id = "world";
-  obj_min_edges.header.frame_id = "world";
-  obj_max_edges.header.frame_id = "world";
-  obj_edges.header.frame_id = "world";
+  obj_centers.header.frame_id = map_frame_id;
+  obj_min_edges.header.frame_id = map_frame_id;
+  obj_max_edges.header.frame_id = map_frame_id;
+  obj_edges.header.frame_id = map_frame_id;
 
   // Publish the data.
   m_pub.publish(pcl_clusters);
@@ -206,6 +224,7 @@ int main (int argc, char** argv)
   // Initialize ROS
   ros::init (argc, argv, "euclidean_cluster");
   ros::NodeHandle nh;
+
 
   ecd_cluster clusters(nh);
 

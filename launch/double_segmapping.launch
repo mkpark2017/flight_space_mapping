@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- segmapper node -->
+  <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
+  <rosparam command="load" file="$(find flight_space_mapping)/launch/kitti/kitti_loop_closure_multi.yaml"/>
+  <arg name="icp_configuration_file" value="$(find flight_space_mapping)/launch/kitti/icp_dynamic_outdoor.yaml"/>
+  <arg name="icp_input_filters_file" value="$(find flight_space_mapping)/launch/kitti/input_filters_outdoor.yaml"/>
+  <!-- Enable callgrind profiling -->
+  <arg name="enable_callgrind" default="false"/>
+  <arg name="callgrind_ouput_path" value="/tmp/segmatch-callgrind.out"/>
+  <arg name="launch_prefix" value="valgrind --tool=callgrind --callgrind-out-file=$(arg callgrind_ouput_path) --instr-atstart=no" if="$(arg enable_callgrind)"/> 
+  <arg name="launch_prefix" value="" unless="$(arg enable_callgrind)"/>
+
+  <node name="segmapper" pkg="segmapper" type="segmapper_node" output="screen" respawn="false" launch-prefix="$(arg launch_prefix)">
+    <param name="icp_configuration_file" value="$(arg icp_configuration_file)"/>
+    <param name="icp_input_filters_file" value="$(arg icp_input_filters_file)"/>
+    <!-- param name="robot_prefix" value="uav1" / -->
+  </node>
+  <!-- Rviz visualization config file path -->
+  <arg name="rviz_config_file" value="$(env HOME)/.segmap/kitti/kitti_loop_closure.rviz"/>
+  <!-- rviz node -->
+  <node name="visualizer" pkg="rviz" type="rviz" output="screen" respawn="$(arg respawn_value)" args="-d $(arg rviz_config_file)" />
+</launch>

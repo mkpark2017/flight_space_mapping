@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+  <model name="Goheung Building 1">
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://Goheung_Building_1/meshes/Building1.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+  </model>
+</sdf>
