@@ -5,6 +5,6 @@
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find flight_space_mapping)/world/grass_houses_graywall.world" />
+    <arg name="world_name" value="$(find flight_space_mapping)/worlds/grass_houses_graywall.world" />
   </include>
 </launch>

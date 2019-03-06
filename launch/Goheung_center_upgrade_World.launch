@@ -5,6 +5,6 @@
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find flight_space_mapping)/models"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find flight_space_mapping)/world/Goheung_center_upgrade.world" />
+    <arg name="world_name" value="$(find flight_space_mapping)/worlds/Goheung_center_upgrade.world" />
   </include>
 </launch>

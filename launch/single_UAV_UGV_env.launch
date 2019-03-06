@@ -3,8 +3,8 @@
   <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
   <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" default="$(find flight_space_mapping)/world/city_2.world"/> 
-<!--    <arg name="world_name" default="$(find flight_space_mapping)/world/Goheung_center_upgrade.world"/>-->
+    <arg name="world_name" default="$(find flight_space_mapping)/worlds/city_2.world"/> 
+<!--    <arg name="world_name" default="$(find flight_space_mapping)/worlds/Goheung_center_upgrade.world"/>-->
     <!-- <arg name="debug" value="true"/> -->
     <arg name="paused" value="true"/>
     <!-- <arg name="gui" value="false"/> -->
