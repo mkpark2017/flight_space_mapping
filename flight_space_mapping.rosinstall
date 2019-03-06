@@ -1,6 +1,10 @@
 - git: {local-name: flight_space_mapping, uri: 'https://github.com/mkpark2017/flight_space_mapping.git'}
 - git: {local-name: wind_visualization, uri: 'https://github.com/mkpark2017/wind_visualization'}
+<<<<<<< HEAD
 - git: {local-name: octomap_mapping, uri: 'https://github.com/mkpark2017/octomap_mapping', version: 'kinetic-devel'}
+=======
+- git: {local-name: octomap_mapping, uri: 'https://github.com/mkpark2017/octomap_mapping', version: 'jade-devel'}
+>>>>>>> dc0ac79a00dba39142a1a36dcc72dd4832384c63
 - git: {local-name: mav_comm, uri: 'https://github.com/mkpark2017/mav_comm.git'}
 - git: {local-name: mavlink, uri: 'https://github.com/mkpark2017/mavlink-gbp-release.git', version: 'upstream'}
 - git: {local-name: mavros, uri: 'https://github.com/mkpark2017/mavros.git'}

@@ -117,7 +117,10 @@ add_executable(ugv_objects_map src/ugv_objects_map.cpp)
 add_executable(ransac_ground_filter src/ransac_ground_filter.cpp)
 add_executable(pass_through_ground_filter src/pass_through_ground_filter.cpp)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> dc0ac79a00dba39142a1a36dcc72dd4832384c63
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -134,8 +137,11 @@ target_link_libraries(ugv_objects_map ${catkin_LIBRARIES})
 target_link_libraries(ransac_ground_filter ${catkin_LIBRARIES})
 target_link_libraries(pass_through_ground_filter ${catkin_LIBRARIES})
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> dc0ac79a00dba39142a1a36dcc72dd4832384c63
 
 #############
 ## Install ##
