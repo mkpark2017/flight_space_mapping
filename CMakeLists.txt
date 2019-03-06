@@ -116,7 +116,10 @@ add_executable(euclidean_cluster src/euclidean_cluster.cpp)
 add_executable(ugv_objects_map src/ugv_objects_map.cpp)
 add_executable(ransac_ground_filter src/ransac_ground_filter.cpp)
 add_executable(pass_through_ground_filter src/pass_through_ground_filter.cpp)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 390effeb03e8cba1b629c617428e1069d59ba92a
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
