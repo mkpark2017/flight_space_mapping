@@ -3,7 +3,7 @@
 - git: {local-name: octomap_mapping, uri: 'https://github.com/mkpark2017/octomap_mapping', version: 'jade-devel'}
 - git: {local-name: mav_comm, uri: 'https://github.com/ethz-asl/mav_comm.git', version: '3.2.0'}
 - git: {local-name: mavlink, uri: 'https://github.com/mkpark2017/mavlink-gbp-release_public.git', version: 'upstream'}
-- git: {local-name: mavros, uri: 'https://github.com/ethz-asl/mavros.git'}
+- git: {local-name: mavros, uri: 'https://github.com/mkpark2017/mavros.git'}
 - git: {local-name: rotors_simulator, uri: 'https://github.com/mkpark2017/rotors_simulator.git', version: 'kinetic/3D_LiDAR'}
 - git: {local-name: velodyne_simulator, uri: 'https://github.com/mkpark2017/Velodyne_simulator.git'}
 - git: {local-name: husky, uri: 'http://github.com/mkpark2017/husky.git', version: 'pre_tf_added'}
