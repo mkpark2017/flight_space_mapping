@@ -28,7 +28,7 @@ Installation Instructions - Ubuntu 16.04 with ROS Kinetic
    $ source ~/.bashrc
    ```
 
-Note. Normally Kinetic-devel requires extra packages.
+Note. Normally Kinetic-devel requires extra packages for Rotors simulator.
 ```
 $ sudo apt-get install ros-kinetic-desktop-full ros-kinetic-joy ros-kinetic-octomap-ros ros-kinetic-mavlink python-wstool python-catkin-tools protobuf-compiler libgoogle-glog-dev ros-kinetic-control-toolbox
 ```
