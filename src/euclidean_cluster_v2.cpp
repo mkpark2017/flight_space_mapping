@@ -159,8 +159,8 @@ void cloud_cb (const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 	  sensor_msgs::PointCloud2 obj_min_edges, obj_max_edges;
 	  sensor_msgs::PointCloud2 obj_edges;
 	  int j = 1;
-	  uint32_t color=0x00000F;
-          uint32_t color_coll = 0x000F6F;
+	  uint32_t color=0x000F6F;
+          uint32_t color_coll = 0x00000F;
 	  for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
 	  {
 	    pcl::PointCloud<RefPointType>::Ptr cloud_cluster (new pcl::PointCloud<RefPointType>);
